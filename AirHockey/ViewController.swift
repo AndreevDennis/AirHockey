@@ -37,10 +37,17 @@ class ViewController: UIViewController {
         animator.addBehavior(colision)
         animator.addBehavior(colisionLine)
         self.view.bringSubviewToFront(puck)
-        timer = Timer.scheduledTimer(timeInterval: <#T##TimeInterval#>, target: self, selector: #selector(<#T##@objc method#>), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(statucPuck), userInfo: nil, repeats: true)
     }
     
-    
+    @objc func statucPuck(){
+        if puck.frame.intersects(bottomGoal.frame){
+            print("GoalBottom")
+        }
+        if puck.frame.intersects(topGoal.frame){
+            print("GoalTop")
+        }
+    }
     
     @IBAction func panGestureTopPaddle(_ sender: UIPanGestureRecognizer) {
         if topSnapBehaviour != nil {
@@ -49,9 +56,6 @@ class ViewController: UIViewController {
         switch sender.state {
         case .began, .changed:
             topSnapBehaviour = UISnapBehavior(item: topPaddle, snapTo: sender.location(in: self.view))
-            if puck.frame.intersects(topGoal.frame){
-                print("GoalTop")
-            }
             animator.addBehavior(topSnapBehaviour!)
         default:
             break
@@ -66,9 +70,6 @@ class ViewController: UIViewController {
         switch sender.state {
         case .began, .changed:
             bottomSnapBehaviour = UISnapBehavior(item: bottomPaddle, snapTo: sender.location(in: self.view))
-            if puck.frame.intersects(bottomGoal.frame){
-                print("GoalBottom")
-            }
             animator.addBehavior(bottomSnapBehaviour!)
         default:
               break
